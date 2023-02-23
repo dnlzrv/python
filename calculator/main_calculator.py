@@ -16,7 +16,7 @@ def calculate():
     expression = exercise +number
     if not expression:
         return
-    result = eval(exercise + number)
+    result = eval(expression)
     setEntryText(resultOutput, result)
     exercise = ""
     number = str(result)
@@ -31,10 +31,25 @@ def buildNumber(value: str):
 
 def addOperation(value: str):
     global exercise, number
+    if exercise and exercise[-1] in operations:
+        return
     exercise += number + value
     number = ""
     setEntryText(resultOutput, exercise)
+
+def backspaceClicked(entry):
+    global number, exercise
+    if (not number) and (not exercise): 
+        return
+    elif number and not exercise:
+        number = number[:-1]
+    elif not number and exercise:
+        exercise = exercise[:-1]
+    elif number and exercise:
+        number = number[:-1]
     
+    deletLastCharFromEntry(resultOutput)    
+          
 def setEntryText(entry, text):
     entry.config(state="normal")
     entry.delete(0, END)
@@ -48,16 +63,22 @@ def buttonClicked(value: str):
         resetCalculator()
     elif value in digits or value == ".":
         buildNumber(value)
-    elif value in operations and number:
+    elif value in operations:  #and number #and (exercise[-1] not in operations)
         addOperation(value)
-
+    elif value == "←":
+        backspaceClicked(resultOutput)
+        
+def deletLastCharFromEntry(entry):
+    current_expression = entry.get()
+    setEntryText(entry, current_expression[:-1])
+        
 def makeButton(parent, value: str):
-    return Button(parent, text=value, font ='areal 15 bold', command=lambda m=value: buttonClicked(value))
+    return Button(parent, text=value, font ='arial 15 bold', command=lambda m=value: buttonClicked(value))
 
 root = Tk()
 root.geometry("450x400+300+100")
 root.title("CALCULATOR")
-resultOutput = Entry(root, justify=RIGHT, font ='areal 15 bold', state= "disabled")
+resultOutput = Entry(root, justify=RIGHT, font ='arial 15 bold', state= "disabled")
 setEntryText(resultOutput, "0")
 resultOutput.insert(0, '0' )
 resultOutput.grid(column = 0, row = 0, columnspan=4, sticky = "nswe",padx = 3, pady = 3)
@@ -69,7 +90,7 @@ buttonValues = [
     [4, 5, 6, "-"],
     [1, 2, 3, "*"],
     [0, ".","AC", "/"],
-    ["="]
+    ["←", "="]
 ]
 
 for rowIndex, row in enumerate(buttonValues):
