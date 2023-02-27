@@ -16,10 +16,13 @@ def calculate():
     expression = exercise +number
     if not expression:
         return
-    result = eval(expression)
-    setEntryText(resultOutput, result)
-    exercise = ""
-    number = str(result)
+    try:
+        result = eval(expression)
+        setEntryText(resultOutput, result)
+        exercise = ""
+        number = str(result)
+    except:
+        resultOutput.configure(state='normal', bg='red')
 
 def buildNumber(value: str):
     global exercise, number
@@ -31,8 +34,11 @@ def buildNumber(value: str):
 
 def addOperation(value: str):
     global exercise, number
-    if exercise and exercise[-1] in operations:
-        return
+    if not number:
+        if not exercise:
+            return
+        if exercise and exercise[-1] in operations:
+            return
     exercise += number + value
     number = ""
     setEntryText(resultOutput, exercise)
@@ -47,15 +53,16 @@ def backspaceClicked(entry):
         exercise = exercise[:-1]
     elif number and exercise:
         number = number[:-1]
-    
-    deletLastCharFromEntry(resultOutput)    
-          
+    deletLastCharFromEntry(resultOutput)
+              
 def setEntryText(entry, text):
     entry.config(state="normal")
     entry.delete(0, END)
+    if text == '':
+        text ='0'
     entry.insert(0, text)
     entry.config(state="readonly")
-
+    
 def buttonClicked(value: str):
     if value == "=":
         calculate()
@@ -67,21 +74,21 @@ def buttonClicked(value: str):
         addOperation(value)
     elif value == "←":
         backspaceClicked(resultOutput)
-        
+       
 def deletLastCharFromEntry(entry):
     current_expression = entry.get()
     setEntryText(entry, current_expression[:-1])
         
 def makeButton(parent, value: str):
-    return Button(parent, text=value, font ='arial 15 bold', command=lambda m=value: buttonClicked(value))
+    return Button(parent, text=value, font ='arial 18 bold', command=lambda m=value: buttonClicked(value))
 
 root = Tk()
 root.geometry("450x400+300+100")
 root.title("CALCULATOR")
-resultOutput = Entry(root, justify=RIGHT, font ='arial 15 bold', state= "disabled")
+resultOutput = Entry(root, justify = RIGHT, font ='arial 20 bold', state = "disabled" )
 setEntryText(resultOutput, "0")
-resultOutput.insert(0, '0' )
-resultOutput.grid(column = 0, row = 0, columnspan=4, sticky = "nswe",padx = 3, pady = 3)
+resultOutput.insert(0, '0')
+resultOutput.grid(column = 0, row = 0, columnspan = 4, sticky = "nswe", padx = 3, pady = 3)
 
 digits = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 operations = ["+", "-", "*", "/"]
@@ -97,9 +104,9 @@ for rowIndex, row in enumerate(buttonValues):
     for columnIndex, value in enumerate(row):
         button = makeButton(root, str(value))
         if value == "=":
-            button.grid(column = 3, row = rowIndex + 1, sticky = "nswe", padx = 3, pady = 3)
+            button.grid(column = 3, row = rowIndex + 1, sticky = "nswe",padx = 1, pady = 1, ipadx = 5, ipady = 3)
         else:
-            button.grid(column = columnIndex, row = rowIndex + 1, sticky = "nswe", padx = 3)
+            button.grid(column = columnIndex, row = rowIndex + 1, sticky = "nswe",padx = 1, pady = 1, ipadx = 5, ipady = 3)
 
         root.columnconfigure(index = columnIndex , weight= 1)
     root.rowconfigure(index = rowIndex + 1, weight= 1 )
