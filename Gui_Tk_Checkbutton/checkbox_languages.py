@@ -22,13 +22,13 @@ class Languages(tk.Tk):
             
         for index, language in enumerate(self.languages):
             checkBox = self.makeCheckBox(language, index)
-            checkBox.pack()
+            checkBox.pack(anchor = 'w')
 
         self.button = self.makeButton()
         self.button.pack(expand=True, fill='both')
             
     def makeCheckBox(self, text, index):
-        return tk.Checkbutton(self, text = text, variable = self.values[index],
+        return tk.Checkbutton(self, text = text, font = 'arial 12 bold', variable = self.values[index],
                               height = 2, padx= 10)
                            
     def get_status(self):
@@ -36,7 +36,7 @@ class Languages(tk.Tk):
             print(language, self.values[index].get())  
         
     def makeButton(self):
-        return tk.Button(self, text='Show', command=self.get_status)
+        return tk.Button(self, text='Show', font = 'arial 12 bold', command=self.get_status)
                    
 myapp = Languages()
 myapp.mainloop()
