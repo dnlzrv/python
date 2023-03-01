@@ -11,16 +11,15 @@ import tkinter as tk
 from PIL import Image, ImageTk
 
 class Languages(tk.Tk):
-    def __init__(self):
+    def __init__(self, liste):
         super(Languages, self).__init__()       
-        self.geometry('200x400')
-        self.title('Languages')
-        self.languages = ['Python', 'C#', 'C++', 'C', 'Ruby', 'Perl', 'Java']
+        self.geometry('200x450')
+        self.languages = liste
         self.values = []
+        self.title('Languages')
         
         self.image = Image.open("sprache.jpg").resize((50, 30))
         self.photo = ImageTk.PhotoImage(self.image)
-        #self.photo.place(anchor = 'w')
         for language in self.languages:
             varTk = tk.IntVar()  
             varTk.set(0)
@@ -47,5 +46,7 @@ class Languages(tk.Tk):
                          command=self.get_status, relief='raised', 
                          bd=8, image=self.photo, compound= 'left')
                    
-myapp = Languages()
-myapp.mainloop()
+if '__main__'==__name__:  
+    liste_languages = [ 'Swift', 'Python', 'C#', 'C++', 'C', 'Ruby', 'Perl', 'Java']            
+    myapp = Languages(liste_languages)
+    myapp.mainloop()
