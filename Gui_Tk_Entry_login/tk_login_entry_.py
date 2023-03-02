@@ -22,7 +22,6 @@ class LoginApp(tk.Tk):
 
         self.entryUser = tk.Entry(self, textvariable= self.username).grid(row= 1, column= 2, columnspan=3, sticky='nesw')
         
-
         self.labelPass = tk.Label(self, text= 'Passwort').grid(row= 2, column= 1)
         self.userpass.trace("w", lambda name, index, mode, sv=self.userpass: self.onPasswordChanged(self.userpass))
         self.entryPass = tk.Entry(self, textvariable= self.userpass, show="*").grid(row= 2, column= 2, columnspan=3, sticky='nesw')
