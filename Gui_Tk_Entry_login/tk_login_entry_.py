@@ -28,14 +28,12 @@ class LoginApp(ThemedTk):
 
         self.entryUser = ttk.Entry(self, textvariable= self.username).grid(row=0, column=1, padx=10, pady=(20, 5))
         
-
         self.labelPass = ttk.Label(self, text= 'Passwort').grid(row=1, column=0, padx=10, pady=(5, 20), sticky='w')
         self.userpass.trace("w", lambda name, index, mode, sv=self.userpass: self.onPasswordChanged(self.userpass))
         self.entryPass = ttk.Entry(self, textvariable= self.userpass, show="*").grid(row=1, column=1, padx=10, pady=(5, 20))
        
         self.buttonSubmit = ttk.Button(self, text= 'Submit', command = self.onButtonClick, state= tk.DISABLED)
         self.buttonSubmit.grid(row=3, column=1, padx=10, pady=(5, 20))
-
 
     def onUserNameChanged(self, sv):
         self.updateSubmitButton()
@@ -51,7 +49,6 @@ class LoginApp(ThemedTk):
         print(self.username.get(), ':', self.userpass.get())
     
     def updateSubmitButton(self):
-    
         if self.isUsernameValid() and self.isPasswortValid():
             self.buttonSubmit['state'] = tk.NORMAL
         else:
