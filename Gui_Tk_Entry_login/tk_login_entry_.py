@@ -5,29 +5,37 @@
 # 4) 2 Radiobuttons nebeneinander: "Remember me", "Don't remember me"
 
 import tkinter as tk 
+from tkinter import ttk
+from ttkthemes import ThemedTk
+ 
 
-class LoginApp(tk.Tk):
+class LoginApp(ThemedTk):
     def __init__(self):
         super(LoginApp, self).__init__()
         self.geometry('300x300')
-        self.title('Einlogen')
+        self.title('Einloggen')
+        
+        self.style = ttk.Style(self)
+        self.style.theme_use('blue')
         
         self.username = tk.StringVar()
         self.userpass = tk.StringVar()
 
-        self.frame = tk.Frame(self)
+        self.frame = ttk.Frame(self)
         self.frame.grid()
-        self.labelUser = tk.Label(self, text= 'Login').grid(row= 1, column= 1)
+        self.labelUser = ttk.Label(self, text= 'Login').grid(row=0, column=0, padx=10, pady=(20, 5), sticky='w')
         self.username.trace("w", lambda name, index, mode, sv=self.username: self.onUserNameChanged(self.username))
 
-        self.entryUser = tk.Entry(self, textvariable= self.username).grid(row= 1, column= 2, columnspan=3, sticky='nesw')
+        self.entryUser = ttk.Entry(self, textvariable= self.username).grid(row=0, column=1, padx=10, pady=(20, 5))
         
-        self.labelPass = tk.Label(self, text= 'Passwort').grid(row= 2, column= 1)
+
+        self.labelPass = ttk.Label(self, text= 'Passwort').grid(row=1, column=0, padx=10, pady=(5, 20), sticky='w')
         self.userpass.trace("w", lambda name, index, mode, sv=self.userpass: self.onPasswordChanged(self.userpass))
-        self.entryPass = tk.Entry(self, textvariable= self.userpass, show="*").grid(row= 2, column= 2, columnspan=3, sticky='nesw')
+        self.entryPass = ttk.Entry(self, textvariable= self.userpass, show="*").grid(row=1, column=1, padx=10, pady=(5, 20))
        
-        self.buttonSubmit =tk.Button(self, text= 'Submit', command = self.onButtonClick, state= tk.DISABLED)
-        self.buttonSubmit.grid(row= 3, column= 2, columnspan=3)
+        self.buttonSubmit = ttk.Button(self, text= 'Submit', command = self.onButtonClick, state= tk.DISABLED)
+        self.buttonSubmit.grid(row=3, column=1, padx=10, pady=(5, 20))
+
 
     def onUserNameChanged(self, sv):
         self.updateSubmitButton()
